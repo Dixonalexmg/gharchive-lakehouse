@@ -1,0 +1,96 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# uv
+.uv/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.cache/
+.hypothesis/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Data — never commit raw or processed lake artifacts
+data/
+!data/.gitkeep
+*.parquet
+*.delta/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# GH Archive raw downloads
+gharchive_raw/
+*.json.gz
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/.user.yml
+
+# Dagster
+dagster_home/
+*.dagster
+tmp_dagster/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Great Expectations
+gx/uncommitted/
+great_expectations/uncommitted/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Spark
+*.crc
+_SUCCESS
+
+# Docker
+.docker/
+
+# MkDocs build output
+site/
+_site/
+
+# Claude local config
+.claude/

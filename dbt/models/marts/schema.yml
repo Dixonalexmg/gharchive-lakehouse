@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Calendar dimension; one row per event_date observed in the fact."
+    columns:
+      - name: date_key
+        description: "Primary key (DATE)."
+        tests:
+          - not_null
+          - unique
+      - name: year
+        tests: [not_null]
+      - name: month
+        tests: [not_null]
+
+  - name: dim_repo
+    description: "Repository dimension with cumulative engagement metrics."
+    columns:
+      - name: repo_id
+        tests:
+          - not_null
+          - unique
+      - name: repo_name
+        tests: [not_null]
+      - name: total_events
+        tests: [not_null]
+
+  - name: dim_actor
+    description: "GitHub actor dimension with cumulative activity metrics."
+    columns:
+      - name: actor_id
+        tests:
+          - not_null
+          - unique
+      - name: total_events
+        tests: [not_null]
+
+  - name: fact_events
+    description: "Event-grain fact table partitioned by event_date."
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
+      - name: event_type
+        tests: [not_null]
+      - name: event_date
+        tests: [not_null]
+      - name: repo_id
+        tests:
+          - relationships:
+              to: ref('dim_repo')
+              field: repo_id
+              config:
+                where: "repo_id is not null"
+      - name: actor_id
+        tests:
+          - relationships:
+              to: ref('dim_actor')
+              field: actor_id
+              config:
+                where: "actor_id is not null"

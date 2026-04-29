@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: silver
+    description: "Schema-enforced, deduplicated GH Archive events (Bronze → Silver)."
+    meta:
+      external_location: "{{ var('silver_path') }}"
+    tables:
+      - name: silver_gharchive_events
+        description: "One row per public GitHub event."
+        columns:
+          - name: event_id
+            description: "Natural key of the event (numeric)."
+            tests:
+              - not_null
+              - unique
+          - name: event_type
+            tests: [not_null]
+          - name: created_at
+            tests: [not_null]
+          - name: event_date
+            tests: [not_null]

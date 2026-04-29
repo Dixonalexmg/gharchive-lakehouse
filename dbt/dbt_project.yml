@@ -1,0 +1,30 @@
+name: gharchive
+version: "0.1.0"
+config-version: 2
+
+profile: gharchive
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  gharchive:
+    +file_format: delta
+    staging:
+      +materialized: view
+      +schema: silver
+    marts:
+      +materialized: table
+      +schema: gold
+
+vars:
+  silver_path: "{{ env_var('LAKE_SILVER', './data/silver') }}/silver_gharchive_events"
+  gold_path: "{{ env_var('LAKE_GOLD', './data/gold') }}"

@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_events
+    description: "Projection of Silver events used as the single source for Gold marts."
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
+      - name: event_type
+        tests: [not_null]
+      - name: created_at
+        tests: [not_null]
+      - name: event_date
+        tests: [not_null]
