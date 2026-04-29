@@ -37,3 +37,15 @@ def test_write_hour_dump_creates_valid_gzip_jsonl(tmp_path: Path) -> None:
 def test_write_hour_dump_rejects_invalid_hour(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="hour must be in 0..23"):
         write_hour_dump(tmp_path, dt.date(2024, 1, 1), hour=99)
+
+
+def test_write_hour_dump_ids_are_unique_across_hours(tmp_path: Path) -> None:
+    """Multi-hour dumps must not collide on event_id, otherwise Silver's
+    dedup-by-event_id silently drops rows from later hours."""
+    ids: set[str] = set()
+    for hour in range(3):
+        path = write_hour_dump(tmp_path, dt.date(2024, 1, 1), hour=hour, count=5)
+        with gzip.open(path, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                ids.add(json.loads(line)["id"])
+    assert len(ids) == 15

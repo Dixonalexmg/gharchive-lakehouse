@@ -69,12 +69,15 @@ def make_event(event_id: int, ts: dt.datetime) -> dict[str, object]:
 
 
 def write_hour_dump(raw_dir: Path, date: dt.date, hour: int, count: int) -> Path:
+    """Write a synthetic hourly dump with globally unique ids per (date, hour)."""
     raw_dir.mkdir(parents=True, exist_ok=True)
     path = raw_dir / f"{date:%Y-%m-%d}-{hour}.json.gz"
     base = dt.datetime(date.year, date.month, date.day, hour, tzinfo=dt.UTC)
+    day_offset = (date.toordinal() - dt.date(2024, 1, 1).toordinal()) * 24_000
+    id_offset = day_offset + hour * 1000
     with gzip.open(path, "wt", encoding="utf-8") as fh:
         for i in range(count):
-            event = make_event(i, base + dt.timedelta(minutes=i))
+            event = make_event(id_offset + i, base + dt.timedelta(minutes=i))
             fh.write(json.dumps(event) + "\n")
     return path
 
