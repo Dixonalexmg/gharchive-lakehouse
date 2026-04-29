@@ -43,6 +43,10 @@ def get_spark(
         .config("spark.sql.session.timeZone", "UTC")
         .config("spark.driver.memory", driver_mem)
         .config("spark.driver.bindAddress", "127.0.0.1")
+        # Advertise as 127.0.0.1 too, otherwise CI runners (whose hostname
+        # resolves to an internal address Spark can't reach back) fail to
+        # init the JavaSparkContext with "Connection refused".
+        .config("spark.driver.host", "127.0.0.1")
         .config("spark.ui.showConsoleProgress", "false")
     )
     for key, value in (extra_conf or {}).items():
