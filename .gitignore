@@ -69,6 +69,7 @@ dbt/.user.yml
 dagster_home/
 *.dagster
 tmp_dagster/
+.tmp_dagster_home_*/
 
 # MLflow
 mlruns/
